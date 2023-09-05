@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ionic4thesis": {
+      "hosting": {
+        "app": [
+          "ionic4thesis"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ionic4thesis"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "841782522419",
+    "firebase_url": "https://ionic4thesis-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ionic4thesis",
+    "storage_bucket": "ionic4thesis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841782522419:android:65a57c378ca56ef8f72946",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841782522419-kk1fcaa8v96tieonaii71moapdmv4oh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzWIL6UP3kcpPrU_JA59MzYlNGpTClG6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841782522419-kk1fcaa8v96tieonaii71moapdmv4oh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

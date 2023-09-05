@@ -1,0 +1,22 @@
+.col-div-space{
+  margin-right: 8px;
+  max-width: 100px;
+}
+.col-div{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+.delete-button {
+  cursor: pointer;
+  color: red;
+  margin-left: 5px;
+}
+
+.delete-button:hover {
+  font-weight: bold;
+}
+.horizontal-scroll {
+  white-space: nowrap;
+  overflow-x: scroll;
+}

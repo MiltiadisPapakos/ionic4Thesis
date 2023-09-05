@@ -1,0 +1,46 @@
+.row-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+.col-div{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+.col-div-space{
+  margin-bottom: 8px;
+  max-width: 100px;
+}
+/* Adjust the font size of the date-time picker */
+ion-datetime {
+  font-size: 5px; /* You can adjust this value */
+}
+
+/* Optionally, adjust padding and margin if needed */
+ion-datetime {
+  padding: 5px; /* You can adjust this value */
+  margin: 5px 0; /* You can adjust this value */
+}
+/* date-picker.page.scss */
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+/* Style the toggle to resemble a button or visually distinct element */
+ion-toggle {
+  background-color: #007bff; /* Example color */
+  color: white; /* Example text color */
+  padding: 6px 12px; /* Example padding */
+  border-radius: 8px; /* Example border radius */
+  border: none;
+  cursor: pointer;
+}
+
+/* Style the label to match the appearance of the toggle */
+ion-label {
+  font-weight: bold;
+  margin: 0;
+}

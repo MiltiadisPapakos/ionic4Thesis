@@ -1,0 +1,9 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  background-color: #2196F3;
+}
+.row-div {
+  display: flex;
+  justify-content: space-evenly;
+}

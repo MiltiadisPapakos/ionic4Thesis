@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Προσθήκη στοιχείων</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label>Όνομα</ion-label>
+        <ion-input formControlName = "name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Επίθετο</ion-label>
+        <ion-input  formControlName = "surname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ηλικία</ion-label>
+        <ion-input formControlName = "age"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Τηλέφωνο</ion-label>
+        <ion-input formControlName = "phone_number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ρόλος</ion-label>
+        <select  formControlName = "role">
+          <option value="volunteer">Εθελοντής</option>
+          <option value="in-need">Ωφελούμενος</option>
+        </select>
+
+      </ion-item>
+
+    </ion-list>
+
+
+    <ion-item>
+    <ion-button type="submit" expand="block" [disabled]= "!checkboxChecked || !formData.valid" >Submit</ion-button>
+    </ion-item>
+  </form>
+
+  <ion-item>
+    <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>
+    <ion-label>Συμφωνώ με τους όρους και  προϋποθέσεις</ion-label>
+  </ion-item>
+
+
+
+
+  <ion-button (click)="logout()">
+    <ion-icon slot="icon-only" name="log-out"></ion-icon>
+  </ion-button>
+</ion-content>
