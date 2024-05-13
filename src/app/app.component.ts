@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MessagingService} from "./services/fcm.service";
+import {NgxQrcodeElementTypes} from "@techiediaries/ngx-qrcode";
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,10 @@ import {MessagingService} from "./services/fcm.service";
 export class AppComponent {
   title = "push-notification";
   message: any;
-  constructor(private messagingService: MessagingService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.messagingService.requestPermission()
-    this.messagingService.receiveMessage()
-    this.message = this.messagingService.currentMessage
   }
+
+  elementType = NgxQrcodeElementTypes.IMG;
 }

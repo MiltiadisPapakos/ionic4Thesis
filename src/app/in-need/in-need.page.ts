@@ -133,10 +133,8 @@ getTime(){
    return time
 }
 isValid(){
-  let condition1 = false;
-  let condition2 = false;
-  condition1 = !(this.getDay() === undefined || this.getTime().length === 0 || this.locationName === '');
-  condition2 = !(this.getDayByCalender() === undefined || this.getTime().length === 0 || this.locationName === '');
+  let condition1 = !(this.getDay() === undefined || this.getTime().length === 0 || this.locationName === '');
+  let condition2 = !(this.getDayByCalender() === undefined || this.getTime().length === 0 || this.locationName === '');
   return condition1 || condition2
 }
 

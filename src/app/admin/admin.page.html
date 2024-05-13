@@ -1,37 +1,48 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>admin</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
+<header>
+  <h1>Admin</h1>
+  <button class="logout-button" (click)="logout()">Logout</button>
+</header>
+
+<main>
   <table>
+    <thead>
     <tr>
       <th>ΟΝΟΜΑ</th>
       <th>ΕΠΙΘΕΤΟ</th>
       <th>ΗΛΙΚΙΑ</th>
       <th>ΡΟΛΟΣ</th>
       <th>ΤΗΛΕΦΩΝΟ</th>
+      <th>ΔΙΑΓΡΑΦΗ</th>
     </tr>
-    <tr *ngFor="let element of userList; index as i;" class="horizontal-scroll">
-      <td>{{element.Name}}</td>
-      <td>{{element.Surname}}</td>
-      <td>{{element.Age}}</td>
-      <td>{{element.Role}}</td>
-      <td>{{element.Phone_Number}}</td>
-      <span class="delete-button">X</span>
+    </thead>
+    <tbody>
+    <tr *ngFor="let element of userList; index as i;">
+      <td>{{ element.Name }}</td>
+      <td>{{ element.Surname }}</td>
+      <td>{{ element.Age }}</td>
+      <td>{{ element.Role }}</td>
+      <td>{{ element.Phone_Number }}</td>
+      <td>
+        <button class="delete-button" (click)="deleteUser(element.userID)">
+          <ion-icon name="close-circle-outline" style="color: red;"></ion-icon>
+        </button>
+      </td>
     </tr>
+    </tbody>
   </table>
-
   <ion-list>
-    <ion-label>Αιτήματα</ion-label><br />
-    <div *ngFor="let element of requestList; index as i;">
-      <span class ="col-div-space">{{element.request_name}}</span>
-    </div>
+    <ion-item-divider>
+      <ion-label>Αιτήματα</ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let element of requestList; index as i;">
+      {{ element.request_name }}
+    </ion-item>
   </ion-list>
-  <ion-input type="text" id="request">Νέο αίτημα</ion-input>
-  <ion-button (click)="createRequestItem()">Δημιουργία Αιτήματος</ion-button>
-  <ion-button (click)="logout()">
-    <ion-icon slot="icon-only" name="log-out"></ion-icon>
-  </ion-button>
-</ion-content>
+
+  <div class="new-request-container">
+    <ion-input type="text" id="request" placeholder="Νέο αίτημα"></ion-input>
+    <ion-button (click)="createRequestItem()">Δημιουργία Αιτήματος</ion-button>
+  </div>
+</main>
+

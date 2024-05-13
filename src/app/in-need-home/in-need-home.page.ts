@@ -8,17 +8,28 @@ import {Router} from "@angular/router";
   styleUrls: ['./in-need-home.page.scss'],
 })
 export class InNeedHomePage implements OnInit {
-
+  whichSegment = 0;
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit() {
   }
+  content_visibility = 'visible';
   async setInNeedDetails() {
     await this.router.navigateByUrl('/in-need', {replaceUrl: true});
   }
-  async logout(){
+
+  async logout() {
     await this.authService.logout();
-    await this.router.navigateByUrl('/',{ replaceUrl: true});
+    await this.router.navigateByUrl('/', {replaceUrl: true});
+  }
+
+  requestsSegmentChanged(event :any){
+    this.whichSegment = event.detail.value;
+  }
+  hideBackground(event: string){
+      this.content_visibility = event;
+
   }
 }

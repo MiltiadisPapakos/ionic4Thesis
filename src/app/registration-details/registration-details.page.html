@@ -1,6 +1,65 @@
+<!--<ion-header>-->
+<!--  <ion-toolbar>-->
+<!--    <ion-title>Προσθήκη στοιχείων</ion-title>-->
+<!--  </ion-toolbar>-->
+<!--</ion-header>-->
+
+<!--<ion-content>-->
+<!--  <form [formGroup]="formData" (ngSubmit)="onSubmit()">-->
+<!--    <ion-list>-->
+<!--      <ion-item>-->
+<!--        <ion-label>Όνομα</ion-label>-->
+<!--        <ion-input formControlName = "name"></ion-input>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-label>Επίθετο</ion-label>-->
+<!--        <ion-input  formControlName = "surname"></ion-input>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-label>Ηλικία</ion-label>-->
+<!--        <ion-input formControlName = "age"></ion-input>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-label>Τηλέφωνο</ion-label>-->
+<!--        <ion-input formControlName = "phone_number"></ion-input>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-label>Ρόλος</ion-label>-->
+<!--        <select  formControlName = "role">-->
+<!--          <option value="volunteer">Εθελοντής</option>-->
+<!--          <option value="in-need">Ωφελούμενος</option>-->
+<!--        </select>-->
+
+<!--      </ion-item>-->
+
+<!--    </ion-list>-->
+
+
+<!--    <ion-item>-->
+<!--    <ion-button type="submit" expand="block" [disabled]= "!checkboxChecked || !formData.valid" >Submit</ion-button>-->
+<!--    </ion-item>-->
+<!--  </form>-->
+
+<!--  <ion-item>-->
+<!--    <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>-->
+<!--    <ion-label>Συμφωνώ με τους όρους και  προϋποθέσεις</ion-label>-->
+<!--  </ion-item>-->
+
+
+
+
+<!--  <ion-button (click)="logout()">-->
+<!--    <ion-icon slot="icon-only" name="log-out"></ion-icon>-->
+<!--  </ion-button>-->
+<!--</ion-content>-->
 <ion-header>
   <ion-toolbar>
     <ion-title>Προσθήκη στοιχείων</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -8,47 +67,42 @@
   <form [formGroup]="formData" (ngSubmit)="onSubmit()">
     <ion-list>
       <ion-item>
-        <ion-label>Όνομα</ion-label>
-        <ion-input formControlName = "name"></ion-input>
+        <ion-label position="floating">Όνομα</ion-label>
+        <ion-input formControlName="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Επίθετο</ion-label>
-        <ion-input  formControlName = "surname"></ion-input>
+        <ion-label position="floating">Επίθετο</ion-label>
+        <ion-input formControlName="surname"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Ηλικία</ion-label>
-        <ion-input formControlName = "age"></ion-input>
+        <ion-label position="floating">Ηλικία</ion-label>
+        <ion-input formControlName="age" type="number"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Τηλέφωνο</ion-label>
-        <ion-input formControlName = "phone_number"></ion-input>
+        <ion-label position="floating">Τηλέφωνο</ion-label>
+        <ion-input formControlName="phone_number" type="tel"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Ρόλος</ion-label>
-        <select  formControlName = "role">
-          <option value="volunteer">Εθελοντής</option>
-          <option value="in-need">Ωφελούμενος</option>
-        </select>
-
+        <ion-select formControlName="role" interface="action-sheet">
+          <ion-select-option value="volunteer">Εθελοντής</ion-select-option>
+          <ion-select-option value="in-need">Ωφελούμενος</ion-select-option>
+        </ion-select>
       </ion-item>
-
     </ion-list>
 
+    <ion-item lines="none">
+      <ion-checkbox [(ngModel)]="checkboxChecked" [ngModelOptions]="{ standalone: true }" slot="start" class="cookie-checkbox"></ion-checkbox>
+      <ion-label class="checkbox-label">Συμφωνώ με τους όρους και προϋποθέσεις</ion-label>
+    </ion-item>
 
     <ion-item>
-    <ion-button type="submit" expand="block" [disabled]= "!checkboxChecked || !formData.valid" >Submit</ion-button>
+      <ion-button type="submit" expand="block" [disabled]="!checkboxChecked || !formData.valid">
+        Υποβολή
+      </ion-button>
     </ion-item>
   </form>
-
-  <ion-item>
-    <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>
-    <ion-label>Συμφωνώ με τους όρους και  προϋποθέσεις</ion-label>
-  </ion-item>
-
-
-
-
-  <ion-button (click)="logout()">
-    <ion-icon slot="icon-only" name="log-out"></ion-icon>
-  </ion-button>
 </ion-content>
+
+
+

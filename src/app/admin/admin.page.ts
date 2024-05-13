@@ -5,7 +5,9 @@ import {Router} from "@angular/router";
 import {RetrieveUserDataService} from "../services/retrieve-user-data.service";
 import {AuthService} from "../services/auth.service";
 import {getApp} from "@angular/fire/app";
-import {addDoc, collection, getFirestore} from "@angular/fire/firestore";
+import {addDoc, collection, deleteDoc, getFirestore} from "@angular/fire/firestore";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {doc} from "@firebase/firestore";
 
 @Component({
   selector: 'app-admin',
@@ -20,7 +22,8 @@ export class AdminPage implements OnInit {
               private retrieveRequestList: RetrieveRequestListService,
               private router: Router,
               private authService: AuthService,
-              private zone: NgZone) { }
+              private zone: NgZone,
+              private firestore: AngularFirestore) { }
 
   async ngOnInit() {
     this.userList = await this.retrieveUserDetailsService.getUserList()
@@ -37,8 +40,14 @@ export class AdminPage implements OnInit {
     // this.zone.run(() => {
     // });
   }
+  async deleteUser(userID : string){
+    const firebaseApp = getApp();
+    const database = getFirestore(firebaseApp);
+    await deleteDoc(doc(database, "registration-details", userID));
+  }
   async logout(){
     await this.authService.logout();
     await this.router.navigateByUrl('/',{ replaceUrl: true});
+
   }
 }

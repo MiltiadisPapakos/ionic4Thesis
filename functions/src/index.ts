@@ -10,12 +10,18 @@
 
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {sendMatches} from "./sendMatches";
+import {changeStatus, getInNeedFcmToken, getVolFcmTokens} from "./fcmUtils";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import _ = require("lodash");
 
 
 const settings = {ignoreUndefinedProperties: true};
 
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
 
 const volunteersCollection = "volunteer-availability";
 const requestsCollection = "request_info";
@@ -82,7 +88,6 @@ export const matchVolunteersToInNeed = functions.firestore
               }
             });
         }
-        console.log(matchesVol);
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -96,6 +101,7 @@ export const matchRequestsToVolunteers = functions.firestore
     try {
       // Get the new request data
       const requestData = snapshot.data();
+      const reqId = snapshot.id;
       const matchesReq: any[] = [];
       // Fetch all volunteers
       // eslint-disable-next-line max-len
@@ -132,14 +138,97 @@ export const matchRequestsToVolunteers = functions.firestore
         // eslint-disable-next-line max-len
         const hasTime = timeInfo ? timeInfo.some((time: string | any[]) => time.includes(requestData.time[0])) : true;
         if (isInRectangle && hasRequestId && hasDay && hasTime) {
-          matchesReq.push({"VolId": docId});
+          matchesReq.push( docId);
         }
       });
       // Perform further processing or notify potential volunteers
-      console.log("Potential volunteers:", matchesReq);
+      sendMatches(matchesReq, reqId);
     } catch (error) {
       console.error("Error occurred:", error);
       throw error;
     }
   });
+export const notifyVolunteers = functions.https.onCall(async (data) => {
+  const requestList = await getVolFcmTokens(data.uid);
+  changeStatus(requestList);
+  requestList.forEach((request) =>{
+    request.tokens.forEach((token: any)=>{
+      return admin.messaging().send(createVolMassage(request, token))
+        .then((response) => {
+          // Response is a message ID string.
+          console.log("Successfully sent message:", response);
+        })
+        .catch((error) => {
+          console.log("Error sending message:", error);
+        });
+    });
+  });
+});
 
+// eslint-disable-next-line require-jsdoc
+function createVolMassage(request : any, token : string) {
+  return {
+    notification: {
+      title: "Νεο αίτημα " + request.requestName,
+      body: "Πληροφοριεσς " + request.locationName + request.hours,
+    },
+    token: token,
+  };
+}
+export const acceptReq = functions.https.onCall(async (data) => {
+  const flag = "accept";
+  console.log("BEFORE GETTING TOKEN");
+  console.log(data);
+  const token = await getInNeedFcmToken(data.uid);
+  console.log("AFTER GETTING TOKEN");
+  const valid = createInNeedMassage(flag, token);
+  console.log("AFTER VALID");
+  if (valid !== null) {
+    console.log("INSIDE IF");
+    admin.messaging().send(valid)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log("Successfully sent message:", response);
+      })
+      .catch((error) => {
+        console.log("Error sending message:", error);
+      });
+  }
+});
+export const rejectReq = functions.https.onCall(async (data) => {
+  const flag = "reject";
+  console.log("000000000000000000000000000000000000000");
+  const token = await getInNeedFcmToken(data.uid);
+  const valid = createInNeedMassage(flag, token);
+  if (valid !== null) {
+    admin.messaging().send(valid)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log("Successfully sent message:", response);
+      })
+      .catch((error) => {
+        console.log("Error sending message:", error);
+      });
+  }
+});
+// eslint-disable-next-line require-jsdoc
+function createInNeedMassage(flag : string, token : string) {
+  if (flag === "accept") {
+    return {
+      notification: {
+        title: "ΑΠΟΔΟΧΗ ΑΙΤΗΜΑΤΟΣ ",
+        body: "Το αίτημά σας έγινε αποδεκτό πατήστε για παραπάνω πληροφορίες ",
+      },
+      token: token,
+    };
+  } else if (flag === "reject") {
+    return {
+      notification: {
+        title: "ΑΠΟΡΡΙΨΗ ΑΙΤΗΜΑΤΟΣ ",
+        body: "Το αίτημά σας απορρίφθηκε από ολους τους πιθανούς εθελοντές",
+      },
+      token: token,
+    };
+  }
+  return null;
+}

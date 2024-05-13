@@ -5,8 +5,11 @@ import {Router} from "@angular/router";
 import {AlertController, LoadingController} from "@ionic/angular";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {getApp} from "@angular/fire/app";
-import {addDoc, collection, doc, getFirestore, setDoc} from "@angular/fire/firestore";
+import {doc, getFirestore, setDoc} from "@angular/fire/firestore";
 import {RetrieveUserDataService} from "../services/retrieve-user-data.service";
+import {updateDoc} from "@firebase/firestore";
+import {FCM} from "@capacitor-community/fcm";
+import {PushNotifications} from "@capacitor/push-notifications";
 
 @Component({
   selector: 'app-registration-details',
@@ -67,6 +70,7 @@ export class RegistrationDetailsPage implements OnInit {
 
    const userId = await this.userService.getUid()
    await setDoc(doc(database,'registration-details',userId),this.formData.value)
+   await updateDoc(doc(database,'registration-details',userId), await FCM.getToken())
    let role = this.formData.get('role')?.value;
 
     if (role === "volunteer"){
@@ -74,7 +78,8 @@ export class RegistrationDetailsPage implements OnInit {
     }else if (role ==="in-need") {
      await this.router.navigateByUrl('/in-need', {replaceUrl: true});
     }
-
+    await PushNotifications.requestPermissions();
+    await PushNotifications.register()
   }
   validateSelect(c: FormControl) {
     const selectedValue = c.value;

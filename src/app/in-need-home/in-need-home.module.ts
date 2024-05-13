@@ -7,14 +7,20 @@ import { IonicModule } from '@ionic/angular';
 import { InNeedHomePageRoutingModule } from './in-need-home-routing.module';
 
 import { InNeedHomePage } from './in-need-home.page';
+import {RequestsListComponent} from "../requests-list/requests-list.component";
+import {NgxQRCodeModule} from "@techiediaries/ngx-qrcode";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InNeedHomePageRoutingModule
+    InNeedHomePageRoutingModule,
+    NgxQRCodeModule
   ],
-  declarations: [InNeedHomePage]
+  exports: [
+    RequestsListComponent
+  ],
+  declarations: [InNeedHomePage, RequestsListComponent]
 })
 export class InNeedHomePageModule {}

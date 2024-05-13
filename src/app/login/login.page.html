@@ -1,23 +1,89 @@
+<!--<ion-header>-->
+<!--  <ion-toolbar>-->
+<!--    <ion-title>My App</ion-title>-->
+<!--  </ion-toolbar>-->
+<!--</ion-header>-->
+
+<!--<ion-content class="ion-padding">-->
+<!--  <form [formGroup]="credentials" (ngSubmit)="login()">-->
+
+<!--    <ion-item fill="solid" class="ion-margin-bottom">-->
+<!--      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>-->
+<!--      <ion-note slot="error" *ngIf="(email?.dirty || email?.touched) && email?.errors">Email is invalid</ion-note>-->
+<!--    </ion-item>-->
+
+<!--    <ion-item fill="solid" class="ion-margin-bottom">-->
+<!--      <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>-->
+<!--      <ion-note slot="error" *ngIf="(password?.dirty || password?.touched) && password?.errors">Password needs to be 6 characters at least</ion-note>-->
+<!--    </ion-item>-->
+<!--    <ion-button expand="full" type="submit" [disabled]="!credentials.valid">Σύνδεση</ion-button>-->
+<!--    <ion-button expand="full" type="button" (click)="register()">Δημιουργία Λογαριασμού</ion-button>-->
+<!--  </form>-->
+
+<!--</ion-content>-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My App</title>
+  <style>
+    /* Add your custom styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    ion-content {
+      padding: 20px;
+    }
+
+    ion-item {
+      margin-bottom: 15px;
+    }
+
+    ion-note {
+      font-size: 0.8em;
+      color: red;
+    }
+
+    ion-button {
+      margin-top: 20px;
+      --background: #007bff;
+      --color: #fff;
+      --border-radius: 8px;
+      --padding-start: 20px;
+      --padding-end: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>My App</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <form [formGroup]="credentials" (ngSubmit)="login()">
 
-    <ion-item fill="solid" class="ion-margin-bottom">
-      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-      <ion-note slot="error" *ngIf="(email?.dirty || email?.touched) && email?.errors">Email is invalid</ion-note>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" formControlName="email" placeholder="Enter your email"></ion-input>
+      <ion-note *ngIf="(email?.dirty || email?.touched) && email?.errors">Email is invalid</ion-note>
     </ion-item>
 
-    <ion-item fill="solid" class="ion-margin-bottom">
-      <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-      <ion-note slot="error" *ngIf="(password?.dirty || password?.touched) && password?.errors">Password needs to be 6 characters at least</ion-note>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Enter your password"></ion-input>
+      <ion-note *ngIf="(password?.dirty || password?.touched) && password?.errors">Password needs to be 6 characters at least</ion-note>
     </ion-item>
-    <ion-button expand="full" type="submit" [disabled]="!credentials.valid">Σύνδεση</ion-button>
-    <ion-button expand="full" type="button" (click)="register()">Δημιουργία Λογαριασμού</ion-button>
+
+    <ion-button expand="full" type="submit" [disabled]="!credentials.valid">Sign In</ion-button>
+    <ion-button expand="full" type="button" (click)="register()">Create Account</ion-button>
   </form>
-
 </ion-content>
+
+</body>

@@ -3,7 +3,6 @@ import {Auth} from "@angular/fire/auth";
 import {getApp, initializeApp} from "@angular/fire/app";
 import {doc, getDoc, getFirestore} from "@angular/fire/firestore";
 
-
 @Injectable({
   providedIn: 'root'
 })

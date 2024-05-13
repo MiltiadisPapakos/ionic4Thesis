@@ -1,0 +1,61 @@
+.request-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.request-item {
+  margin-bottom: 20px;
+}
+
+.request-content {
+  padding: 10px;
+  border: 1px solid #ccc; /* Add border for visual separation */
+  border-radius: 5px;
+}
+
+.request-name {
+  margin-right: 7px;
+  font-size: large;
+}
+
+.request-details {
+  margin-bottom: 7px;
+}
+
+.volunteer-selection button {
+  margin-right: 7px;
+}
+
+.matched-volunteer {
+  margin-top: 7px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-button span {
+  font-weight: bold;
+}
+
+.close-camera-button {
+  margin-top: 20px;
+}
+
+.qr-icon,
+.camera-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+

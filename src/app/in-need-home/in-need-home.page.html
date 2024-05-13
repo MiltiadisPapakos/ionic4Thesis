@@ -1,12 +1,62 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>in-needHome</ion-title>
+<!--<ion-header [style.visibility]="content_visibility">-->
+<!--  <ion-toolbar>-->
+<!--    <ion-title>in-needHome</ion-title>-->
+<!--  </ion-toolbar>-->
+<!--</ion-header>-->
+<!--<ion-segment [value]="0" swipeGesture="true" (ionChange)="requestsSegmentChanged($event)" [style.visibility]="content_visibility">-->
+<!--  <ion-segment-button [value]="0">-->
+<!--    Available-->
+<!--  </ion-segment-button>-->
+<!--  <ion-segment-button [value]="1">-->
+<!--    Pending-->
+<!--  </ion-segment-button>-->
+<!--</ion-segment>-->
+
+<!--<ion-content [style.visibility]="content_visibility">-->
+
+<!--  <div [ngSwitch]="whichSegment" style="height: 100%">-->
+<!--    <app-requests-list  [flag]="0" [reqStatus]="'pending'" *ngSwitchCase="0"  style="height: 100%"></app-requests-list>-->
+<!--    <app-requests-list [flag]="0" (newItemEvent)="hideBackground($event)" [reqStatus]="'matched'" *ngSwitchCase="1"  style="height: 100%"></app-requests-list>-->
+<!--  </div>-->
+
+<!--</ion-content>-->
+<!--<ion-content [style.visibility]="content_visibility">-->
+<!--  <ion-button (click)="setInNeedDetails()">Υποβολή στοιχειων θεληματος</ion-button>-->
+<!--  <ion-button (click)="logout()">-->
+<!--    <ion-icon slot="icon-only" name="log-out"></ion-icon>-->
+<!--  </ion-button>-->
+
+<!--</ion-content>-->
+<ion-header [style.visibility]="content_visibility">
+  <ion-toolbar color="primary">
+    <ion-title>Τα αιτήματά μου</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-button (click)="setInNeedDetails()">Υποβολή στοιχειων θεληματος</ion-button>
-  <ion-button (click)="logout()">
-    <ion-icon slot="icon-only" name="log-out"></ion-icon>
-  </ion-button>
+<ion-content [style.visibility]="content_visibility" class="content">
+  <ion-segment [value]="0" swipeGesture="true" (ionChange)="requestsSegmentChanged($event)">
+    <ion-segment-button value="0">
+      <ion-label>Προς Αποδοχή</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>Σε εξέλιξη</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ng-container [ngSwitch]="whichSegment">
+    <app-requests-list [flag]="0" [reqStatus]="'pending'" *ngSwitchCase="0"></app-requests-list>
+    <app-requests-list [flag]="0" (newItemEvent)="hideBackground($event)" [reqStatus]="'matched'" *ngSwitchCase="1"></app-requests-list>
+  </ng-container>
 </ion-content>
+
+<ion-footer [style.visibility]="content_visibility">
+  <ion-toolbar>
+    <ion-button expand="full" color="primary" (click)="setInNeedDetails()">Νέο Αίτημα</ion-button>
+  </ion-toolbar>
+</ion-footer>
+

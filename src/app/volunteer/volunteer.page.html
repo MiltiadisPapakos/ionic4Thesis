@@ -1,41 +1,97 @@
+<!--<ion-header>-->
+<!--  <ion-toolbar>-->
+<!--    <ion-title>volunteer</ion-title>-->
+<!--  </ion-toolbar>-->
+<!--</ion-header>-->
+
+<!--<ion-content>-->
+<!--  <ion-grid >-->
+<!--    <div class="col-div">-->
+<!--      <div class="col-div-space"-->
+<!--           *ngFor="let element of dayTable; index as i;">-->
+<!--        <div (click)="setDay(i)" [style]="element.value ? 'background: green' : 'background: red'">{{element.day}}</div>-->
+<!--        <div class="row-div" *ngIf="element.value">-->
+<!--          <div class="row-div"-->
+<!--          *ngFor="let hourElement of element.hours; index as j;" (click)="setTime(i,j)"-->
+<!--          [style]="hourElement.value ? 'background: green' : 'background: red'">-->
+<!--          {{hourElement.time}}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </ion-grid>-->
+<!--  <ion-item>-->
+<!--    <ion-select [(ngModel)] = "requestSelect" [multiple]="true">-->
+<!--      <ion-select-option *ngFor="let element of requestList; index as i; "[value]="element.uid"-->
+<!--                         [style]="element.request ? 'background: green' : 'background: red'">-->
+<!--        {{element['request_name']}}</ion-select-option>-->
+<!--    </ion-select>-->
+<!--  </ion-item>-->
+<!--  <ion-item>-->
+<!--  <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>-->
+<!--  <ion-label>Επιλέξτε αν υπάρχει δυνατότητα αυτοκινήτου</ion-label>-->
+<!--  </ion-item>-->
+<!--  <div id ="map" style="height: 200px; " ></div>-->
+<!--  <ion-button (click)="clearDrawnRectangles()">Καθαρισμός Χάρτη</ion-button>-->
+<!--  <ion-button (click)="onSubmit()" [disabled]="!isValid()">Yποβολή</ion-button>-->
+
+<!--  <ion-button (click)="logout()">-->
+<!--    <ion-icon slot="icon-only" name="log-out"></ion-icon>-->
+<!--  </ion-button>-->
+<!--</ion-content>-->
 <ion-header>
   <ion-toolbar>
-    <ion-title>volunteer</ion-title>
+    <ion-title>Υποβολή Διαθεσιμότητας</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid >
+  <!-- Select Day Section -->
+  <ion-label>Επιλέξτε μέρα και ώρα:</ion-label><br />
+  <ion-grid>
     <div class="col-div">
-      <div class="col-div-space"
-           *ngFor="let element of dayTable; index as i;">
+      <div class="col-div-space" *ngFor="let element of dayTable; index as i;">
         <div (click)="setDay(i)" [style]="element.value ? 'background: green' : 'background: red'">{{element.day}}</div>
         <div class="row-div" *ngIf="element.value">
-          <div class="row-div"
-          *ngFor="let hourElement of element.hours; index as j;" (click)="setTime(i,j)"
-          [style]="hourElement.value ? 'background: green' : 'background: red'">
-          {{hourElement.time}}
+          <div class="row-div" *ngFor="let hourElement of element.hours; index as j;" (click)="setTime(i,j)"
+               [style]="hourElement.value ? 'background: green' : 'background: red'">
+            {{hourElement.time}}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </ion-grid>
+
+  <!-- Select Request Section -->
+  <ion-label>Επιλέξτε αίτημα:</ion-label><br />
   <ion-item>
-    <ion-select [(ngModel)] = "requestSelect" [multiple]="true">
-      <ion-select-option *ngFor="let element of requestList; index as i; "[value]="element.uid"
-                         [style]="element.request ? 'background: green' : 'background: red'">
-        {{element['request_name']}}</ion-select-option>
+    <ion-select [(ngModel)]="requestSelect" multiple="true">
+      <ion-select-option *ngFor="let element of requestList; index as i;" [value]="element.uid">
+        {{ element['request_name'] }}
+      </ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-item>
-  <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>
-  <ion-label>Επιλέξτε αν υπάρχει δυνατότητα αυτοκινήτου</ion-label>
-  </ion-item>
-  <div id ="map" style="height: 200px; " ></div>
-  <ion-button (click)="clearDrawnRectangles()">Καθαρισμός Χάρτη</ion-button>
-  <ion-button (click)="onSubmit()" [disabled]="!isValid()">Yποβολή</ion-button>
 
-  <ion-button (click)="logout()">
-    <ion-icon slot="icon-only" name="log-out"></ion-icon>
-  </ion-button>
+  <!-- Select Car Option Section -->
+  <ion-item>
+    <ion-checkbox [(ngModel)]="checkboxChecked"></ion-checkbox>
+    <ion-label>Επιλέξτε αν υπάρχει δυνατότητα αυτοκινήτου</ion-label>
+  </ion-item>
+
+  <!-- Map Section -->
+  <ion-label>Χάρτης:</ion-label><br />
+  <div id="map" style="height: 200px;"></div>
+
+  <!-- Clear Map Section -->
+  <ion-button (click)="clearDrawnRectangles()" expand="block" size="small">Καθαρισμός Χάρτη</ion-button>
+
+  <!-- Submit Button Section -->
+  <ion-button (click)="onSubmit()" expand="full" [disabled]="!isValid()">Υποβολή</ion-button>
+
 </ion-content>
+
