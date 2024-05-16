@@ -62,7 +62,7 @@
 
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>My App</ion-title>
+    <ion-title>MIVO</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -71,18 +71,18 @@
 
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" formControlName="email" placeholder="Enter your email"></ion-input>
+      <ion-input type="email" formControlName="email" placeholder="Εισάγετε email"></ion-input>
       <ion-note *ngIf="(email?.dirty || email?.touched) && email?.errors">Email is invalid</ion-note>
     </ion-item>
 
     <ion-item>
-      <ion-label position="stacked">Password</ion-label>
-      <ion-input type="password" formControlName="password" placeholder="Enter your password"></ion-input>
+      <ion-label position="stacked">Κωδικός</ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Εισάγετε κωδικός"></ion-input>
       <ion-note *ngIf="(password?.dirty || password?.touched) && password?.errors">Password needs to be 6 characters at least</ion-note>
     </ion-item>
 
-    <ion-button expand="full" type="submit" [disabled]="!credentials.valid">Sign In</ion-button>
-    <ion-button expand="full" type="button" (click)="register()">Create Account</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="!credentials.valid">Σύνδεση</ion-button>
+    <ion-button expand="full" type="button" (click)="register()">Δημιουργία Λογαριασμού</ion-button>
   </form>
 </ion-content>
 
