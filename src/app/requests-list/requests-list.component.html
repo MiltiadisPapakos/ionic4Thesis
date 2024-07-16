@@ -1,42 +1,11 @@
-
-<!--<ul>-->
-<!--  <li *ngFor="let request of requests">-->
-<!--    <span style="margin-right: 7px ; font-size: large" >{{request.nameReq }}</span>-->
-<!--    <div>-->
-<!--    <span style="margin-right: 7px">{{request.data.day }}</span>-->
-<!--    <span style="margin-right: 7px">{{request.data.time }}</span>-->
-<!--    </div>-->
-<!--    <div *ngFor="let vol of request.matchVols">-->
-<!--      <div *ngIf="reqStatus === 'pending'">-->
-<!--        <button-->
-<!--          (click)="toggleVolunteerSelection(request,vol)"-->
-<!--          [style.background-color]="isVolunteerSelected(request,vol) ? 'green' : 'red'">-->
-<!--          {{vol.data.name}} {{vol.data.surname}} ({{vol.data.age}})-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div *ngIf="reqStatus === 'matched'">-->
-<!--        <div>{{vol.data.name}} {{vol.data.surname}} ({{vol.data.age}})</div>-->
-
-<!--        <ngx-qrcode *ngIf="reqStatus === 'matched'&& isQRbuttonclicked === request.id    "-->
-<!--          [elementType]= "elementType"-->
-<!--          [value]=" request.id "-->
-<!--          cssClass="aclass">-->
-<!--        </ngx-qrcode>-->
-<!--      <ion-icon (click)="showQR(request.id)" name="qr-code-outline"></ion-icon>-->
-<!--      <ion-icon (click)="openCamera()" name="camera-outline"></ion-icon>-->
-<!--    </div>-->
-<!--    </div>-->
-<!--  </li>-->
-<!--  <div [style.visibility]="close_camera_button">-->
-<!--    <ion-icon name="close-circle-outline"></ion-icon>-->
-<!--  </div>-->
-<!--</ul>-->
-<!--<button *ngIf="reqStatus === 'pending'" (click)="submitSelection()">Submit Selection</button>-->
 <ul class="request-list">
   <ng-container *ngFor="let request of requests; let last = last">
     <li class="request-item">
       <div class="request-content">
         <span class="request-name"> Αίτημα: {{ request.nameReq }}</span>
+        <div class="request-details">
+          <p>Tοποθεσία:{{ request.data.locationName }}</p>
+        </div>
         <div class="request-details">
           <p>Μέρα: {{ request.data.day }}</p>
         </div>
@@ -46,8 +15,9 @@
 
         <div *ngFor="let vol of request.matchVols">
           <div *ngIf="reqStatus === 'pending'" class="volunteer-selection">
-            <button (click)="toggleVolunteerSelection(request, vol)" [ngStyle]="{ 'background-color': isVolunteerSelected(request, vol) ? 'green' : 'red' }">
+            <button style="font-size: 20px" (click)="toggleVolunteerSelection(request, vol)" [ngStyle]="{ 'background-color': isVolunteerSelected(request, vol) ? '#1aa0e8' : '#e6f786' }">
               {{ vol.data.name }} {{ vol.data.surname }} ({{ vol.data.age }})
+              <ion-icon *ngIf="areMatchedAgain(vol.id)" name="checkmark-circle"></ion-icon>
             </button>
           </div>
           <div *ngIf="reqStatus === 'matched'" class="matched-volunteer">
@@ -55,6 +25,10 @@
             <ngx-qrcode *ngIf="isQRbuttonclicked === request.id" [elementType]="elementType" [value]="request.id" cssClass="qrcode"></ngx-qrcode>
             <ion-icon (click)="showQR(request.id)" name="qr-code-outline" class="qr-icon"></ion-icon>
             <ion-icon (click)="openCamera(request.id)" name="camera-outline" class="camera-icon"></ion-icon>
+          </div>
+          <div *ngIf="reqStatus === 'done'" class="matched-volunteer">
+            <div>{{ vol.data.name }} {{ vol.data.surname }} ({{ vol.data.age }})</div>
+            <ion-icon (click)="setReview(request.id)" name="star-half" class="qr-icon"></ion-icon>
           </div>
         </div>
       </div>

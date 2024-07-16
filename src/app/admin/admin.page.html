@@ -1,48 +1,62 @@
 
-<header>
-  <h1>Admin</h1>
-  <button class="logout-button" (click)="logout()">Logout</button>
-</header>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Admin</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-<main>
-  <table>
-    <thead>
-    <tr>
-      <th>ΟΝΟΜΑ</th>
-      <th>ΕΠΙΘΕΤΟ</th>
-      <th>ΗΛΙΚΙΑ</th>
-      <th>ΡΟΛΟΣ</th>
-      <th>ΤΗΛΕΦΩΝΟ</th>
-      <th>ΔΙΑΓΡΑΦΗ</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let element of userList; index as i;">
-      <td>{{ element.Name }}</td>
-      <td>{{ element.Surname }}</td>
-      <td>{{ element.Age }}</td>
-      <td>{{ element.Role }}</td>
-      <td>{{ element.Phone_Number }}</td>
-      <td>
-        <button class="delete-button" (click)="deleteUser(element.userID)">
-          <ion-icon name="close-circle-outline" style="color: red;"></ion-icon>
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <ion-list>
+<ion-content style="background-color: red; padding: 20px;">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+      <tr>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΟΝΟΜΑ</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΕΠΙΘΕΤΟ</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΗΛΙΚΙΑ</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΡΟΛΟΣ</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΤΗΛΕΦΩΝΟ</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">ΔΙΑΓΡΑΦΗ</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of userList; index as i;">
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ element.Name }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ element.Surname }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ element.Age }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ element.Role }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ element.Phone_Number }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">
+          <ion-button *ngIf="element.Role !== 'admin'" color="danger" (click)="deleteUser(element.userID)">
+            <ion-icon name="close-circle-outline" style="color: white;"></ion-icon>
+          </ion-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ion-grid style="overflow-y: scroll">
     <ion-item-divider>
       <ion-label>Αιτήματα</ion-label>
     </ion-item-divider>
     <ion-item *ngFor="let element of requestList; index as i;">
       {{ element.request_name }}
+      <ion-button color="danger" slot="end" (click)="deleteReq(element.uid)">
+        <ion-icon name="close-circle-outline" style="color: white;"></ion-icon>
+      </ion-button>
     </ion-item>
-  </ion-list>
+  </ion-grid>    <ion-input type="text" id="request" placeholder="Νέο αίτημα"></ion-input>
 
+</ion-content>
+
+<footer style="background-color: white">
   <div class="new-request-container">
-    <ion-input type="text" id="request" placeholder="Νέο αίτημα"></ion-input>
-    <ion-button (click)="createRequestItem()">Δημιουργία Αιτήματος</ion-button>
+    <ion-button style="width: 100%" (click)="createRequestItem()">Δημιουργία Αιτήματος</ion-button>
   </div>
-</main>
+</footer>
 

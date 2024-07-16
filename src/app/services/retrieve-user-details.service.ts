@@ -15,7 +15,7 @@ export class RetrieveUserDetailsService {
     const database = getFirestore(firebaseApp);
     const querySnapshot = await getDocs(collection(database, "registration-details"));
     querySnapshot.forEach((doc) => {
-        let userListInfo = {"userID": doc.id, "Name": doc.data()['name'], "Surname": doc.data()['`surname'],
+        let userListInfo = {"userID": doc.id, "Name": doc.data()['name'], "Surname": doc.data()['surname'],
           "Age" : doc.data()['age'],"Role": doc.data()['role'], "Phone_Number" : doc.data()['phone_number']}
         this.userList.push(userListInfo)
 

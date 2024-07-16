@@ -12,9 +12,21 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import {AsyncPipe} from "@angular/common";
 import {AngularFireModule} from "@angular/fire/compat";
+import {ReviewFormComponent} from "./review-form/review-form.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule,NgxQRCodeModule,AngularFireModule.initializeApp(environment.firebase), IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage())],
+  declarations: [AppComponent,ReviewFormComponent],
+  imports: [BrowserModule, NgxQRCodeModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    IonicModule.forRoot(), AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },AsyncPipe],
   bootstrap: [AppComponent],
 })

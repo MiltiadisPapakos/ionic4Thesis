@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -6,7 +6,7 @@ import { ModalController } from '@ionic/angular';
   templateUrl: './success-error-modal.component.html',
   styleUrls: ['./success-error-modal.component.scss']
 })
-export class SuccessErrorModalComponent {
+export class SuccessErrorModalComponent implements OnInit {
 
   @Input() title: string | undefined;
   @Input() message: string | undefined;
@@ -15,9 +15,13 @@ export class SuccessErrorModalComponent {
   iconClass: string | undefined;
   iconColor: string | undefined;
   iconSize: any;
+  path_image : string | undefined;
 
   constructor(private modalController: ModalController) {
-    this.iconClass = this.type === 'success' ? 'fas fa-check-circle' : 'fas fa-times-circle';
+  }
+
+  ngOnInit() {
+    this.path_image = this.type === 'success' ? "assets/check.png" : "assets/x.png";
     this.iconColor = this.type === 'success' ? '#28a745' : '#dc3545';
   }
 

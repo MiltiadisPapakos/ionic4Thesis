@@ -1,56 +1,6 @@
-<!--<ion-header>-->
-<!--  <ion-toolbar>-->
-<!--    <ion-title>in_need</ion-title>-->
-<!--  </ion-toolbar>-->
-<!--</ion-header>-->
-
-<!--<ion-content>-->
-
-<!--  <ion-label>Επιλέξτε μέρα:</ion-label><br />-->
-<!--  <div>-->
-<!--    <ion-toggle [(ngModel)]="showDatePicker" (ionChange)="onToggleChange()"></ion-toggle> <ion-label>  Επέλεξε Ραντεβού</ion-label><br />-->
-<!--  </div>-->
-<!--  <div>-->
-<!--  <ion-datetime *ngIf="showDatePicker" presentation="date" [(ngModel)]="selectedDate" [min]="minDate"></ion-datetime>-->
-<!--  </div>-->
-<!--  <ion-grid *ngIf="showGrid">-->
-<!--    <div class="col-div">-->
-<!--      <div class="col-div-space"-->
-<!--        *ngFor="let element of dayTable; index as i;" (click)="setDay(i)"-->
-<!--        [style]="element.value ? 'background: green' : 'background: red'">-->
-<!--        {{element.day}}-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </ion-grid>-->
-<!--  <ion-label>Επιλέξτε ώρα:</ion-label><br />-->
-<!--  <ion-grid >-->
-<!--    <div class="row-div">-->
-<!--      <span-->
-<!--        *ngFor="let element of timeTable; index as i;" (click)="setTime(i )"-->
-<!--        [style]="element.value ? 'background: green' : 'background: red'">-->
-<!--        {{element.time}}-->
-<!--      </span>-->
-<!--    </div>-->
-<!--  </ion-grid>-->
-<!--  <ion-label>Επιλέξτε αίτημα:</ion-label><br />-->
-<!--  <ion-item>-->
-<!--    <ion-select [(ngModel)] = "requestSelect">-->
-<!--      <ion-select-option *ngFor="let element of requestList; index as i; " [value]="element.uid"-->
-<!--              [style]="element.request ? 'background: green' : 'background: red'">-->
-<!--        {{element['request_name']}}</ion-select-option>-->
-<!--    </ion-select>-->
-<!--  </ion-item>-->
-<!--  <input id="autocomplete" placeholder="Βάλε τοποθεσία αιτήματος" type="text"/>-->
-
-<!--  <ion-button expand="full" (click)="onSubmit()"  [disabled]= "!isValid()" >Υποβολή Αιτήματος</ion-button>-->
-
-<!--  <ion-button (click)="logout()">-->
-<!--    <ion-icon slot="icon-only" name="log-out"></ion-icon>-->
-<!--  </ion-button>-->
-<!--</ion-content>-->
 <ion-header>
   <ion-toolbar>
-    <ion-title>Δημιουργία Αιτήματος</ion-title>
+    <ion-title>Νέο Αίτημα</ion-title>
     <ion-buttons slot="end">
       <ion-button color="danger" (click)="logout()">
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
@@ -61,7 +11,7 @@
 
 <ion-content>
   <div>
-    <ion-label>  Επέλεξε Ραντεβού:</ion-label>
+    <ion-label>Επέλεξε Ραντεβού:</ion-label>
     <div>
     <ion-toggle [(ngModel)]="showDatePicker" (ionChange)="onToggleChange()"></ion-toggle>
     </div>
@@ -74,7 +24,7 @@
     <ion-label>Επιλέξτε μέρα:</ion-label>
     <div class="col-div">
       <div class="col-div-space" *ngFor="let element of dayTable; index as i;" (click)="setDay(i)"
-           [style]="element.value ? 'background: green' : 'background: red'">
+           [style]="element.value ? 'background: #1aa0e8' : 'background: #e6f786'">
         {{element.day}}
       </div>
     </div>
@@ -84,7 +34,7 @@
   <ion-grid>
     <div class="row-div">
       <span *ngFor="let element of timeTable; index as i;" (click)="setTime(i)"
-            [style]="element.value ? 'background: green' : 'background: red'">
+            [style]="element.value ? 'background: #1aa0e8' : 'background: #e6f786'">
         {{element.time}}
       </span>
     </div>
@@ -94,7 +44,7 @@
   <ion-item>
     <ion-select [(ngModel)]="requestSelect">
       <ion-select-option *ngFor="let element of requestList; index as i; " [value]="element.uid"
-                         [style]="element.request ? 'background: green' : 'background: red'">
+                         [style]="(element.request ? 'background: #1aa0e8' : 'background: #e6f786')">
         {{element['request_name']}}</ion-select-option>
     </ion-select>
   </ion-item>

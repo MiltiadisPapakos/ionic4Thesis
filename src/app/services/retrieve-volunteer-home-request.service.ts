@@ -32,7 +32,7 @@ export class RetrieveVolunteerHomeRequestService {
     let requests  : any[]= [];
     const userId = await this.userId.getUid();
     const q = query(collection(this.db, "request_info"), where("matchedVolIds", "array-contains", userId),
-      where("status", "==",reqStatus));
+      where("status", "==", reqStatus));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -42,7 +42,6 @@ export class RetrieveVolunteerHomeRequestService {
         "data" : this.updateDateTime.updateDateTime(doc.data())
       })
     });
-    console.log(requests);
     return requests;
   }
   async retrieveInNeed() {

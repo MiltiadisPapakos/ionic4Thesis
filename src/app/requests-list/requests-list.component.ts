@@ -8,6 +8,12 @@ import {RetrieveVolunteerHomeRequestService} from "../services/retrieve-voluntee
 import {DateTimeUtilsTsService} from "../services/date-time-utils.ts.service";
 import { ModalController } from '@ionic/angular';
 import {SuccessErrorModalComponent} from "src/app/success-error-modal/success-error-modal.component";
+import {initializeApp} from "@angular/fire/app";
+import {doc, getDoc, getFirestore, limit, orderBy, updateDoc} from "@angular/fire/firestore";
+import {Router} from "@angular/router";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import {RetrieveUserDataService} from "../services/retrieve-user-data.service";
+
 
 @Component({
   selector: 'app-requests-list',
@@ -16,16 +22,37 @@ import {SuccessErrorModalComponent} from "src/app/success-error-modal/success-er
 })
 
 export class RequestsListComponent  implements OnInit {
+  firebaseConfig = {
+    apiKey: "AIzaSyCXWydohCURGsRUMzo_0Or0sbLY4orvEUs",
+    authDomain: "ionic4thesis.firebaseapp.com",
+    databaseURL: "https://ionic4thesis-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ionic4thesis",
+    storageBucket: "ionic4thesis.appspot.com",
+    messagingSenderId: "841782522419",
+    appId: "1:841782522419:web:b00accb5317b2f45f72946",
+    measurementId: "G-0X7Y6859Y7",
+  };
+  // Initialize Firebase
+  app = initializeApp(this.firebaseConfig);
+// Initialize Cloud Firestore and get a reference to the service
+  db = getFirestore(this.app);
   constructor(private requestListInNeed : RetrieveInNeedHomeRequestService,
               private requestListVol : RetrieveVolunteerHomeRequestService,
-              private modalController: ModalController) {
+              private modalController: ModalController,
+              private router: Router,
+              private userId: RetrieveUserDataService) {
 
   }
   @Input() reqStatus : string = " ";
   requests : any[]= [];
   selectedVolunteersList: { id: any, volunteers: any[] }[] = [];
+  are_matched : any = [];
   @Input() flag : number = 0;
   async ngOnInit() {
+    const userId = await this.userId.getUid();
+    const docRef = doc(this.db ,"registration-details",userId);
+    const docSnap = await getDoc(docRef);
+    this.are_matched= docSnap.data()?.["matched"]
    await this.retrieveRequests()
   }
   async retrieveRequests(){
@@ -33,6 +60,7 @@ export class RequestsListComponent  implements OnInit {
       this.requests = await this.requestListInNeed.requestConfig(this.reqStatus);
     }else{
       this.requests = await this.requestListVol.requestConfig(this.reqStatus);
+
     }
   }
 
@@ -40,6 +68,7 @@ export class RequestsListComponent  implements OnInit {
   elementType = NgxQrcodeElementTypes.IMG;
   isQRbuttonclicked = ' ';
   close_camera_button = "hidden";
+
   @Output() newItemEvent = new EventEmitter<string>();
   toggleVolunteerSelection(request: any, volunteer: any): void {
     const requestId = request.id;
@@ -59,6 +88,7 @@ export class RequestsListComponent  implements OnInit {
       this.selectedVolunteersList.push({ id: requestId, volunteers: [volunteerId] });
     }
   }
+
 
 
   isVolunteerSelected(request: any, volunteer: any): boolean {
@@ -95,6 +125,9 @@ export class RequestsListComponent  implements OnInit {
       if (result.hasContent) {
         if (result.content === requestId) {
           await this.presentSuccessModal();
+          //////////////UPDATE FIELD STATUS REQ TO DONE
+          const reqRef = doc(this.db, "request_info", requestId);
+          await updateDoc(reqRef, { "status": "done"})
         } else {
           await this.presentErrorModal();
         }
@@ -111,25 +144,37 @@ export class RequestsListComponent  implements OnInit {
     const modal = await this.modalController.create({
       component: SuccessErrorModalComponent,
       componentProps: {
-        title: 'Success',
-        message: 'Operation completed successfully!',
+        title: 'ΕΠΙΤΥΧΗΣ ΤΑΥΤΟΠΟΙΗΣΗ',
+        message: 'Η ΤΑΥΤΟΠΟΙΗΣΗ ΕΓΙΝΕ ΕΠΙΤΥΧΩΣ',
         type: 'success'
       }
     });
     await modal.present();
+
   }
 
   async presentErrorModal() {
     const modal = await this.modalController.create({
       component: SuccessErrorModalComponent,
       componentProps: {
-        title: 'Error',
-        message: 'An error occurred. Please try again.',
+        title: 'ΑΠΟΤΥΧΙΑ ΚΑΤΑ ΤΗΝ ΤΑΥΤΟΠΟΙΗΣΗ',
+        message: 'Η ΤΑΥΤΟΠΟΙΗΣΗ ΕΓΙΝΕ ΑΝΕΠΙΤΥΧΩΣ',
         type: 'error'
       }
     });
     await modal.present();
   }
+   areMatchedAgain(volunteerId:string){
+    if(this.are_matched && Array.isArray(this.are_matched)){
+      return !!this.are_matched.includes(volunteerId);
+    }else{
+      return false;
+    }
+  }
+  async setReview(requestId: string) {
+    await this.router.navigate(['/review-form'], { queryParams: { requestId } });
+  }
 }
+
 
 

@@ -15,6 +15,7 @@ import {changeStatus, getInNeedFcmToken, getVolFcmTokens} from "./fcmUtils";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import _ = require("lodash");
+import {getAuth} from "firebase-admin/auth";
 
 
 const settings = {ignoreUndefinedProperties: true};
@@ -164,27 +165,45 @@ export const notifyVolunteers = functions.https.onCall(async (data) => {
     });
   });
 });
+// eslint-disable-next-line require-jsdoc
+function updateDateTime(originalJson: any) {
+  // Extract day code from the originalJson
+  const dayCode = originalJson.day;
+  // eslint-disable-next-line max-len
+  const dayTable = [{day: "Δεύτερα", coded: 1, value: false}, {day: "Τρίτη", coded: 2, value: false}, {day: "Τετάρτη", coded: 3, value: false}, {day: "Πέμπτη", coded: 4, value: false},
+    // eslint-disable-next-line max-len
+    {day: "Παρασκευή", coded: 5, value: false}, {day: "Σάββατο", coded: 6, value: false}, {day: "Κυριακή", coded: 0, value: false}];
+
+  // Find the corresponding day value from dayTable
+  const selectedDay = dayTable.find((day) => day.coded === dayCode);
+
+  if (selectedDay) {
+    // Update the day and time fields in the originalJson
+    originalJson.day = selectedDay.day;
+
+    // Extract hour from the time field (remove the last character)
+    originalJson.time = originalJson.time[0].slice(0, -1);
+  }
+
+  return originalJson;
+}
 
 // eslint-disable-next-line require-jsdoc
 function createVolMassage(request : any, token : string) {
+  const updatedReq = updateDateTime(request);
   return {
     notification: {
-      title: "Νεο αίτημα " + request.requestName,
-      body: "Πληροφοριεσς " + request.locationName + request.hours,
+      title: "Νεο αίτημα " + updatedReq.requestName,
+      body: "Πληροφοριες " + updatedReq.locationName + " " + updatedReq.time,
     },
     token: token,
   };
 }
 export const acceptReq = functions.https.onCall(async (data) => {
   const flag = "accept";
-  console.log("BEFORE GETTING TOKEN");
-  console.log(data);
   const token = await getInNeedFcmToken(data.uid);
-  console.log("AFTER GETTING TOKEN");
   const valid = createInNeedMassage(flag, token);
-  console.log("AFTER VALID");
   if (valid !== null) {
-    console.log("INSIDE IF");
     admin.messaging().send(valid)
       .then((response) => {
         // Response is a message ID string.
@@ -197,7 +216,6 @@ export const acceptReq = functions.https.onCall(async (data) => {
 });
 export const rejectReq = functions.https.onCall(async (data) => {
   const flag = "reject";
-  console.log("000000000000000000000000000000000000000");
   const token = await getInNeedFcmToken(data.uid);
   const valid = createInNeedMassage(flag, token);
   if (valid !== null) {
@@ -232,3 +250,8 @@ function createInNeedMassage(flag : string, token : string) {
   }
   return null;
 }
+// eslint-disable-next-line require-jsdoc
+export const deleteUser = functions.https.onCall(async (data) => {
+  await getAuth().deleteUser(data.userID);
+});
+

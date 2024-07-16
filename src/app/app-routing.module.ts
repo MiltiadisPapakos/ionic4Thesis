@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import {canActivate, redirectUnauthorizedTo, redirectLoggedInTo} from "@angular/fire/auth-guard";
+import {ReviewFormComponent} from "./review-form/review-form.component";
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([''])
 const redirectLoggedInToHome = () => redirectLoggedInTo(['home'])
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'in-need-home',
     loadChildren: () => import('./in-need-home/in-need-home.module').then( m => m.InNeedHomePageModule)
+  },
+  {
+    path: 'review-form',
+    component: ReviewFormComponent,
   },
 ];
 

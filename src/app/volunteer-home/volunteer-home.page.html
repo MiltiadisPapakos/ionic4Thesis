@@ -1,44 +1,6 @@
-<!--<ion-header [style.visibility]="content_visibility">-->
-<!--  <ion-toolbar>-->
-<!--    <ion-title>volunteerHome</ion-title>-->
-<!--  </ion-toolbar>-->
-<!--</ion-header>-->
-<!--<ion-segment [value]="0" swipeGesture="true" (ionChange)="requestsSegmentChanged($event) " [style.visibility]="content_visibility">-->
-<!--  <ion-segment-button [value]="0">-->
-<!--    Available-->
-<!--  </ion-segment-button>-->
-<!--  <ion-segment-button [value]="1">-->
-<!--    Pending-->
-<!--  </ion-segment-button>-->
-<!--</ion-segment>-->
-
-<!--<ion-content [style.visibility]="content_visibility">-->
-<!--  <div [ngSwitch]="whichSegment" style="height: 100%">-->
-<!--    <div *ngSwitchCase="0"  style="height: 100%">-->
-<!--      <div *ngFor="let jsonData of jsonDataList" >-->
-<!--        <h3>Location: {{ jsonData.locationName }}</h3>-->
-<!--        <p>Req: {{ jsonData.nameReq }}</p>-->
-<!--        <p>Day: {{ jsonData.day }}</p>-->
-<!--        <p>hours: {{ jsonData.time }}</p>-->
-<!--        <button (click)="acceptRequest(jsonData.id,jsonData.uid)">ΑΠΟΔΟΧΗ</button>-->
-<!--        <button (click)="rejectRequest(jsonData.id,jsonData.uid)">ΑΠΟΡΡΙΨΗ</button>-->
-<!--        <hr>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div *ngSwitchCase="1"  style="height: 100%">-->
-<!--      <app-requests-list [flag]="1" (newItemEvent)="hideBackground($event)" [reqStatus]="'matched'" *ngSwitchCase="1"  style="height: 100%"></app-requests-list>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</ion-content>-->
-<!--<ion-content [style.visibility]="content_visibility">-->
-<!--  <ion-button (click)="setVolunteerDetails()">Υποβολή στοιχειων εθελοντή</ion-button>-->
-<!--  <ion-button (click)="logout()">-->
-<!--    <ion-icon slot="icon-only" name="log-out"></ion-icon>-->
-<!--  </ion-button>-->
-<!--</ion-content>-->
 <ion-header [style.visibility]="content_visibility">
-  <ion-toolbar>
-    <ion-title>Τα αιτήματά μου</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Aιτήματα</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
@@ -54,29 +16,41 @@
   <ion-segment-button value="1">
     <ion-label>Αποδεκτά</ion-label>
   </ion-segment-button>
+  <ion-segment-button value="2">
+    <ion-label>DONE</ion-label>
+  </ion-segment-button>
 </ion-segment>
 
 <ion-content [style.visibility]="content_visibility">
   <div [ngSwitch]="whichSegment" style="height: 100%">
     <div *ngSwitchCase="0" style="height: 100%">
-      <div *ngFor="let jsonData of jsonDataList" class="request-item">
-        <h3>Τοποθεσία: {{ jsonData.locationName }}</h3>
+      <div [ngClass]="{'rejected': jsonData.rejectedVol?.includes(volunteerID), 'default': !jsonData.rejectedVol?.includes(volunteerID)}" *ngFor="let jsonData of jsonDataList" class="request-item">
+        <p>Τοποθεσία: {{ jsonData.locationName }}</p>
         <p>Αίτημα: {{ jsonData.nameReq }}</p>
         <p>Μέρα: {{ jsonData.day }}</p>
         <p>Ώρα: {{ jsonData.time }}</p>
-        <ion-button (click)="acceptRequest(jsonData.id,jsonData.uid)" color="success" fill="outline">Accept</ion-button>
-        <ion-button (click)="rejectRequest(jsonData.id,jsonData.uid)" color="danger" fill="outline">Reject</ion-button>
+        {{ jsonData.in_needName }} {{ jsonData.in_needSurname }} ({{ jsonData.in_needAge }})
+        <div>
+        <ion-button (click)="acceptRequest(jsonData.id,jsonData.uid)" color="success" fill="outline">Αποδοχή</ion-button>
+        <ion-button [disabled]="jsonData.rejectedVol?.includes(volunteerID)" (click)="rejectRequest(jsonData.id,jsonData.uid)" color="danger" fill="outline">Απόρριψη</ion-button>
+        </div>
+        <div *ngIf="jsonData.rejectedVol?.includes(volunteerID)">
+          You have rejected this request.
+        </div>
       </div>
     </div>
     <div *ngSwitchCase="1" style="height: 100%">
       <app-requests-list [flag]="1" (newItemEvent)="hideBackground($event)" [reqStatus]="'matched'"></app-requests-list>
+    </div>
+    <div *ngSwitchCase="2" style="height: 100%">
+      <app-requests-list [flag]="1" (newItemEvent)="hideBackground($event)" [reqStatus]="'done'"></app-requests-list>
     </div>
   </div>
 </ion-content>
 
 <ion-footer [style.visibility]="content_visibility">
   <ion-toolbar>
-    <ion-button (click)="setVolunteerDetails()">Υποβολή Διαθεσιμότητας</ion-button>
+    <ion-button expand="full" color="primary" (click)="setVolunteerDetails()">Υποβολή Διαθεσιμότητας</ion-button>
   </ion-toolbar>
 </ion-footer>
 

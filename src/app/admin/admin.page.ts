@@ -8,6 +8,10 @@ import {getApp} from "@angular/fire/app";
 import {addDoc, collection, deleteDoc, getFirestore} from "@angular/fire/firestore";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {doc} from "@firebase/firestore";
+import {getAuth} from "@angular/fire/auth";
+import {getFunctions, httpsCallable} from "@angular/fire/functions";
+import firebase from "firebase/compat";
+import functions = firebase.functions;
 
 @Component({
   selector: 'app-admin',
@@ -44,6 +48,16 @@ export class AdminPage implements OnInit {
     const firebaseApp = getApp();
     const database = getFirestore(firebaseApp);
     await deleteDoc(doc(database, "registration-details", userID));
+    const functions = getFunctions(firebaseApp)
+    const deleteUser = httpsCallable(functions, 'deleteUser')
+    await deleteUser({"userID": userID})
+    location.reload()
+  }
+  async deleteReq(uid : string){
+    const firebaseApp = getApp();
+    const database = getFirestore(firebaseApp);
+    await deleteDoc(doc(database, "request-list", uid));
+    location.reload()
   }
   async logout(){
     await this.authService.logout();

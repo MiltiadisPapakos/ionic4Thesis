@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {RetrieveUserDataService} from "../services/retrieve-user-data.service";
 import {AuthService} from "../services/auth.service";
-import {collection, deleteDoc, query, where} from "@angular/fire/firestore";
+import {arrayUnion, collection, deleteDoc, getDocs, query, where} from "@angular/fire/firestore";
 import {getFirestore, onSnapshot} from "@angular/fire/firestore";
 import {initializeApp} from "@angular/fire/app";
 import { DateTimeUtilsTsService } from '../services/date-time-utils.ts.service';
@@ -37,6 +37,8 @@ export class VolunteerHomePage implements OnInit {
   whichSegment = 0;
   content_visibility = 'visible';
   requests : any[]= [];
+  // @ts-ignore
+  volunteerID : string= ' '
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -47,20 +49,45 @@ export class VolunteerHomePage implements OnInit {
   }
 
   async ngOnInit() {
-    const q = query(collection(this.db, "request_info"), where("status", "==", "pendingConfirmation"),
+    this.volunteerID = await this.uid.getUid();
+    const q1 = query(collection(this.db, "request_info"), where("status", "==", "pendingConfirmation"),
       where("matchedVolIds", "array-contains", await this.uid.getUid()));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      this.jsonDataList = [];
-      querySnapshot.forEach(async (doc) => {
-        const currentDoc = doc.data();
-        const reqName = await this.requestNames.retrieveRequestName()
-        currentDoc['nameReq'] = reqName.find((l) => doc.data()["requestId"] === l.id).data.request
-        const updatedDoc = this.updateDateTime.updateDateTime(currentDoc);
-        updatedDoc.id = doc.id;
-        this.jsonDataList.push(updatedDoc);
-      });
-    });
+    const q2 = query(collection(this.db, "request_info"), where("status", "==", "pendingConfirmation"),
+      where("rejectedVol", "array-contains", await this.uid.getUid()));
+
+    const [querySnapshot1, querySnapshot2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+
+    // Combine the results
+    const combinedDocs = [...querySnapshot1.docs, ...querySnapshot2.docs].filter(
+      (doc, index, self) => index === self.findIndex((t) => t.id === doc.id)
+    );
+
+    // Call the createList function with the combined results
+    this.createList(combinedDocs);
   }
+  async createList(documents: any){
+    for(const requestDoc of documents){
+    const currentDoc = requestDoc.data();
+    const reqName = await this.requestNames.retrieveRequestName()
+    currentDoc['nameReq'] = reqName.find((l) => requestDoc.data()["requestId"] === l.id).data.request
+    const updatedDoc = this.updateDateTime.updateDateTime(currentDoc);
+    updatedDoc.id = requestDoc.id;
+    await getDoc(doc(this.db, 'registration-details', updatedDoc.uid)).then((docSnapshot) =>{
+      if (docSnapshot.exists()) {
+        updatedDoc.in_needName= docSnapshot.data()["name"];
+        updatedDoc.in_needSurname= docSnapshot.data()["surname"];
+        updatedDoc.in_needAge = docSnapshot.data()["age"];
+      } else {
+        console.log('No such document!');
+      }
+    })
+      .catch((error) => {
+        console.error('Error getting document:', error);
+      });
+    this.jsonDataList.push(updatedDoc);
+    }
+  }
+
 
   async setVolunteerDetails() {
     await this.router.navigateByUrl('/volunteer', {replaceUrl: true});
@@ -94,7 +121,7 @@ export class VolunteerHomePage implements OnInit {
       // Remove the provided uid from the matchedVolIds array
       const updatedMatchedVolIds = matchedVolIds.filter((id: string) => id !== userId);
       // Update the document with the updated matchedVolIds
-      await updateDoc(documentRef, {"matchedVolIds": updatedMatchedVolIds});
+      await updateDoc(documentRef, {"matchedVolIds": updatedMatchedVolIds, "rejectedVol" : arrayUnion(await this.uid.getUid())});
 
       // Check if the updated matchedVolIds is empty
       const isEmpty = updatedMatchedVolIds.length === 0;
