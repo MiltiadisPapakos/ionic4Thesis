@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Submit Review</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" >
+  <form *ngIf="reviewForm" [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+    <ion-item *ngIf="reviewerType === 'volunteer'">
+      <ion-label>Volunteer Name</ion-label>
+      <ion-input type="text" formControlName="volunteer_id" readonly="true"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="reviewerType === 'in-need'">
+      <ion-label>InNeed Name</ion-label>
+      <ion-input type="text" formControlName="person_id" readonly="true"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Service</ion-label>
+      <ion-input type="text" formControlName="service_id" readonly="true"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="reviewerType === 'volunteer'">
+      <ion-label>Punctuality</ion-label>
+      <ion-input type="number" formControlName="punctuality"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="reviewerType === 'volunteer'">
+      <ion-label>Helpfulness</ion-label>
+      <ion-input type="number" formControlName="helpfulness"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="reviewerType === 'volunteer'">
+      <ion-label>Communication</ion-label>
+      <ion-input type="number" formControlName="communication"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="reviewerType === 'in-need'">
+      <ion-label>Clarity of Request</ion-label>
+      <ion-input type="number" formControlName="clarity_of_request"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="reviewerType === 'in-need'">
+      <ion-label>Respectfulness</ion-label>
+      <ion-input type="number" formControlName="respectfulness"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="reviewerType === 'in-need'">
+      <ion-label>Cooperation</ion-label>
+      <ion-input type="number" formControlName="cooperation"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Overall Satisfaction</ion-label>
+      <ion-input type="number" formControlName="overall_satisfaction"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Comments</ion-label>
+      <ion-textarea formControlName="comments"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Match Again</ion-label>
+      <ion-checkbox formControlName="match_again"></ion-checkbox>
+    </ion-item>
+
+    <ion-button type="submit" [disabled]="reviewForm.invalid">Submit Review</ion-button>
+  </form>
+</ion-content>
